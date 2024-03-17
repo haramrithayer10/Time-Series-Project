@@ -1,0 +1,127 @@
+---
+title: "MTH6139 Time Series"
+subtitle: "Coursework 1 Time Series by Haramrit Hayer 210261754 "
+author: Haramrit Hayer
+date: "2024-03-15"
+output: html_document
+---
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri("QMlogo.png"), 
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:0; padding:10px; width:30%;')
+```
+
+### **Exploration of the Iris data set in the Prophet Library**
+
+Within my coursework I decided to explore the Iris data set within the prophet Library. The iris data set contains various information about the flower including things such as sepal length, petal length, sepal width and petal width.
+
+The whole purpose of my project was the use Meta's prophet forecasting system to explore the iris data-set. By treating the petal observations as a sequence overtime we are able to still analyse trends and paterns of the 'iris' data, despite the prophet forecasting system predominantly being used for time-series forecasting.
+
+This is the **R code** that I used for my time- series:
+
+```{r}
+# Load the prophet library
+library(prophet)
+
+# We are now going to convert the data set into a data frame so that we can make a time series from the data
+iris_df <- data.frame(
+  ds = seq.Date(from = Sys.Date(), by = "1 day", length.out = nrow(iris)),  # Creating a sequence of dates
+  y = iris$Sepal.Length  
+)
+
+# Fit Prophet model
+m <- prophet(iris_df)
+
+# Create future dates for forecasting
+future <- make_future_dataframe(m, periods = 30) 
+# Make predictions
+forecast <- predict(m, future)
+
+# Plot the forecast
+plot(m, forecast)
+```
+
+-   I initially converted the data set into a data frame, this way we could see any future predictions, make analytic remarks and see exactly what we need to look at.
+
+-   As you can see I used the time series to look at and analyse the sepal length, in the iris data frame.
+
+-   Near the end I extended the forecast by 30 days, this way I was able to use my data frame to look at predictions of the sepal length in the future, which were curated by the previous data I had.
+
+-   As you can see at the end I assigned forecast name for the predictions and then created a plot for the protections of the future sepal lengths.
+
+### **Forecast plot of the predictions**
+
+![](images/Forecast%20Plot%201.jpg)
+
+-   As we can see, forecast trend demonstrates a continual rise in the predicted sepal length values over time, implying a linear upward trajectory in the measurements.
+
+-   This ascending trend mirrors the outcomes of a basic linear regression analysis this shows that there is a direct correlation between time and sepal length therefore indicating a consistent increase in sepal length over the observed time span.
+
+-   Through the linear regression model, we ascertain a slope coefficient representing the rate of change in sepal length per unit time, providing a quantitative understanding of the steady upward trend observed in the foretasted values.
+
+#### **A further data frame I made was of the Petal width**
+
+The R code I used
+
+```{r}
+library(prophet)
+
+# Convert the iris dataset to a dataframe
+iris_df2 <- data.frame(
+  ds = seq(as.Date("2021-01-01"), by = "1 month", length.out = nrow(iris)),
+  
+  y = iris$Petal.Width  # Using Petal.Width column as the data
+)
+
+m <- prophet::prophet(iris_df2)
+
+future <- prophet::make_future_dataframe(m, periods = 24, freq = "month")  # Extend forecast by 24 months
+
+forecast2 <- predict(m, future)
+
+# Plot the forecast
+plot(m, forecast2)
+```
+
+-   I decided to forecast it for a further 24, months, this was I would be able to get a much greater viewpoint and summer of how the forecast of the petal width would look llike in the future.
+
+-   AS you can see I decided to use a monthly time frame starting from 1st January 2021, right up until 2025 and even beyond.
+
+### **This was forecast2 plot**
+
+![](images/Foecast%202.png)
+
+-   Over here we can see notably that the forecast predicts that the petal width of irises in the data-set will increase by approximately 0.2 units over the next 12 months, indicating a notable growth trend in this characteristic.
+
+-   The forecast suggests a gradual increase in petal width over the extended time period. Indicating strongly a potential trend in this attribute of this iris data set.
+
+-   The upward trajectory is synonymous with the previous observation which has shown a positive correlation between certain iris species and larger petal widths as they mature.
+
+### **Use of full range of features in R**
+
+```{r}
+library(prophet)
+
+# Convert the iris dataset to a dataframe
+iris_df <- data.frame(
+  ds = seq.Date(from = Sys.Date(), by = "1 day", length.out = nrow(iris)),  # Creating a sequence of dates
+  y = iris$Sepal.Length  # Using Sepal.Length column as the data
+)
+
+# Fit Prophet model
+# The prophet::prophet function initializes a new Prophet model object.
+m <- prophet::prophet(iris_df)
+
+future <- prophet::make_future_dataframe(m, periods = 30)  # extend forecast by 30 days
+
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+Above I also decided to explore the full features of r by looking at make_future_dataframe commands. I also experimented previously with plot.prophett commands as-well. I felt that whilst these commands seemed very hard to get used to they made my r code far more neater and allowed me to do things efficiently.
+
+As you can see below i got a similar plot as before:
+
+![](images/Forecast%203.png)
